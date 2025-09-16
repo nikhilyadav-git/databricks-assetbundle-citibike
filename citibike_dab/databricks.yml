@@ -1,0 +1,47 @@
+# This is a Databricks asset bundle definition for citibike_dab.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: citibike_dab
+  uuid: cdb2ca40-9aa7-4b43-bdf5-809ef478044b
+
+artifacts:
+  python_artifact:
+    type: whl
+    build: uv build --wheel
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-dec8ff17-1325.cloud.databricks.com
+
+  stg:
+    mode: production
+    presets:
+      name_prefix: "[stg] "
+    workspace:
+      host: https://dbc-dec8ff17-1325.cloud.databricks.com
+      root_path: /Workspace/Shared/stg/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: nikhyada@gmail.com
+        level: CAN_MANAGE
+
+  prod:
+    mode: production
+    presets:
+      name_prefix: "[prod] "
+    workspace:
+      host: https://dbc-dec8ff17-1325.cloud.databricks.com
+      root_path: /Workspace/Shared/prod/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: nikhyada@gmail.com
+        level: CAN_MANAGE

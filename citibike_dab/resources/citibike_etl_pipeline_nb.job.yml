@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    citibike_etl_pipeline_nb:
+      name: citibike_etl_pipeline_nb
+      tasks:
+        - task_key: BronzeCitiBikeStep
+          notebook_task:
+            notebook_path: ../citibike_etl/notebooks/bronze/bronze_citibike.ipynb
+            source: WORKSPACE
+        - task_key: SilverCitiBikeStep
+          depends_on:
+            - task_key: BronzeCitiBikeStep
+          notebook_task:
+            notebook_path: ../citibike_etl/notebooks/silver/silver_citibike.ipynb
+            source: WORKSPACE
+        - task_key: GoldCitiBikeStep-RideSummary
+          depends_on:
+            - task_key: SilverCitiBikeStep
+          notebook_task:
+            notebook_path: ../citibike_etl/notebooks/gold/gold_citibike_daily_ride_summary.ipynb
+            source: WORKSPACE
+        - task_key: GoldCitiBikeStep-StationPerformance
+          depends_on:
+            - task_key: SilverCitiBikeStep
+          notebook_task:
+            notebook_path: ../citibike_etl/notebooks/gold/gold_citibike_daily_station_performance.ipynb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED

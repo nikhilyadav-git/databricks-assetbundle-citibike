@@ -1,4 +1,27 @@
-# databricks-assetbundle-citibike
+# databricks-assetbundle
+
+#### installation
+https://docs.databricks.com/aws/en/dev-tools/cli/install
+
+#### config file and command
+```sh
+~/.databrickscfg
+databricks configure
+```
+- config file example
+```sh
+cat ~/.databrickscfg                                                                                                                                                                              1 ↵
+# The profile defined in the DEFAULT section is to be used as a fallback when no profile is explicitly specified.
+[DEFAULT]
+
+[databricks-playground]
+host  = https://dbc-dec...dswe.cloud.databricks.com/
+token = dap......
+
+[eurostar-dev]
+host  = https://adb-....95.15.azuredatabricks.net/
+token = dap.......
+```
 
 #### virtual enev
 ```sh
